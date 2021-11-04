@@ -19,6 +19,7 @@ export default abstract class BillingDataRow {
   public seriesName: string
   public instanceType: string
   public replicationFactor: number
+  public resourceId: string
 
   protected constructor(init: Partial<BillingDataRow>) {
     Object.assign(this, init)

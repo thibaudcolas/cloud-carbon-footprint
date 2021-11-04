@@ -12,6 +12,7 @@ export default interface FootprintEstimate {
   kilowattHours: number
   co2e: number
   usesAverageCPUConstant?: boolean
+  resourceId?: string
 }
 
 export type CostAndCo2eTotals = {
@@ -69,6 +70,7 @@ export interface MutableServiceEstimate {
   accountId: string
   accountName: string
   serviceName: string
+  resourceId: string
   kilowattHours: number
   co2e: number
   cost: number
@@ -103,6 +105,7 @@ export const appendOrAccumulateEstimatesByDay = (
     serviceName: rowData.serviceName,
     accountId: rowData.accountId,
     accountName: rowData.accountName,
+    resourceId: rowData.resourceId,
     region: rowData.region,
     cost: rowData.cost,
   }
@@ -122,7 +125,7 @@ export const appendOrAccumulateEstimatesByDay = (
     ) {
       const estimateToAcc = estimatesForDay.serviceEstimates.find(
         (estimateForDay) => {
-          return hasSameRegionAndServiceAndAccount(
+          return hasSameRegionAndServiceAccountAndResourceId(
             estimateForDay,
             serviceEstimate,
           )
@@ -165,18 +168,22 @@ function estimateExistsForRegionAndServiceAndAccount(
     (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
   )
   return estimatesForDay.serviceEstimates.some((estimateForDay) => {
-    return hasSameRegionAndServiceAndAccount(estimateForDay, serviceEstimate)
+    return hasSameRegionAndServiceAccountAndResourceId(
+      estimateForDay,
+      serviceEstimate,
+    )
   })
 }
 
-function hasSameRegionAndServiceAndAccount(
+function hasSameRegionAndServiceAccountAndResourceId(
   estimateOne: MutableServiceEstimate,
   estimateTwo: MutableServiceEstimate,
 ): boolean {
   return (
     estimateOne.region === estimateTwo.region &&
     estimateOne.serviceName === estimateTwo.serviceName &&
-    estimateOne.accountId === estimateTwo.accountId
+    estimateOne.accountId === estimateTwo.accountId &&
+    estimateOne.resourceId === estimateTwo.resourceId
   )
 }
 

@@ -512,6 +512,7 @@ export default class CostAndUsageReports {
                         product_region as region,
                         line_item_product_code as serviceName,
                         line_item_usage_type as usageType,
+                        line_item_resource_id as resourceId,
                         pricing_unit as usageUnit,
                         product_vcpu as vCpus,
                     SUM(line_item_usage_amount) as usageAmount,
@@ -527,7 +528,7 @@ export default class CostAndUsageReports {
                       .utc(end)
                       .format('YYYY-MM-DD')}')
                     GROUP BY 
-                        1,2,3,4,5,6,7`,
+                        1,2,3,4,5,6,7,8`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },

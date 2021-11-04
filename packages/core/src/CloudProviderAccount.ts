@@ -66,6 +66,7 @@ export default class CloudProviderAccount {
                 accountId: this.id,
                 accountName: this.name,
                 serviceName: service.serviceName,
+                resourceId: estimate.resourceId,
                 region: region.id,
                 kilowattHours: estimate.kilowattHours,
                 co2e: estimate.co2e,

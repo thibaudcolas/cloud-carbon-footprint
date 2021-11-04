@@ -16,6 +16,7 @@ export interface ServiceData {
   readonly cost: number
   readonly usesAverageCPUConstant?: boolean
   readonly accountId: string
+  readonly resourceId: string
   // these attributes are mutable because it is required by the client package
   accountName: string
   serviceName: string
