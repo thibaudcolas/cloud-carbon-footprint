@@ -197,6 +197,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -213,6 +216,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-29'),
@@ -229,6 +235,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-29T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-29T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-30'),
@@ -256,6 +265,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
 
@@ -347,6 +359,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.03108584775563959,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -404,6 +419,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -420,6 +438,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -477,6 +498,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -493,6 +517,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -607,6 +634,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -710,6 +740,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.016843399999999998,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -791,6 +824,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.1154976,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -839,6 +875,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.024990035163717835,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -855,6 +894,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.1087279982745107,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-29'),
@@ -871,6 +913,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.3249198354759396,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-29T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-29T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -887,6 +932,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.9142892899138806,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
 
@@ -945,6 +993,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1001,6 +1052,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.27848474801323647,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1046,6 +1100,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000013921034560789199,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-03'),
@@ -1062,6 +1119,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000012878153246556,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-04'),
@@ -1078,6 +1138,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.4851100375076387e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-04T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-05'),
@@ -1094,6 +1157,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.00010595529580428001,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-05T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-05T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-06'),
@@ -1110,6 +1176,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 6.250303140268443e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-06T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-06T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-07'),
@@ -1126,6 +1195,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0000011762860016401646,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-07T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-07T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1239,6 +1311,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 4942.207102554803,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1341,6 +1416,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 3.05859696924017e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1397,6 +1475,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 46.85670185544798,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-02'),
@@ -1424,6 +1505,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 4.83105395687744e-15,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-03'),
@@ -1451,6 +1535,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 58.07228260399504,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1564,6 +1651,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 49.28683193317728,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1610,6 +1700,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
 
@@ -1697,6 +1790,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
 
