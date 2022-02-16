@@ -12,7 +12,6 @@ import {
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   EstimationResult,
-  GroupBy,
   Logger,
   LookupTableInput,
   LookupTableOutput,
@@ -21,7 +20,6 @@ import {
 import {
   accumulateKilowattHours,
   AccumulateKilowattHoursBy,
-  appendOrAccumulateEstimatesByDay,
   CloudConstants,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
@@ -32,7 +30,6 @@ import {
   FootprintEstimate,
   MemoryEstimator,
   MemoryUsage,
-  MutableEstimationResult,
   NetworkingEstimator,
   NetworkingUsage,
   StorageEstimator,
@@ -43,7 +40,6 @@ import {
 
 import {
   COMPUTE_STRING_FORMATS,
-  GCP_QUERY_GROUP_BY,
   MEMORY_USAGE_TYPES,
   NETWORKING_STRING_FORMATS,
   UNKNOWN_SERVICE_TYPES,
@@ -83,44 +79,8 @@ export default class BillingExportTable {
     this.billingExportTableLogger = new Logger('BillingExportTable')
   }
 
-  async getEstimates(
-    start: Date,
-    end: Date,
-    grouping: GroupBy,
-  ): Promise<EstimationResult[]> {
-    const usageRows = await this.getUsage(start, end, grouping)
-
-    const results: MutableEstimationResult[] = []
-    const unknownRows: BillingExportRow[] = []
-
-    usageRows.map((usageRow) => {
-      const billingExportRow = new BillingExportRow(usageRow)
-      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
-        billingExportRow,
-        unknownRows,
-      )
-      if (footprintEstimate)
-        appendOrAccumulateEstimatesByDay(
-          results,
-          billingExportRow,
-          footprintEstimate,
-          grouping,
-        )
-    })
-
-    if (results.length > 0) {
-      unknownRows.map((rowData: BillingExportRow) => {
-        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
-        if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(
-            results,
-            rowData,
-            footprintEstimate,
-            grouping,
-          )
-      })
-    }
-    return results
+  async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
+    return await this.getUsage(start, end)
   }
 
   getEstimatesFromInputData(
@@ -572,36 +532,20 @@ export default class BillingExportTable {
     )[0]
   }
 
-  private async getUsage(
-    start: Date,
-    end: Date,
-    grouping: GroupBy,
-  ): Promise<RowMetadata[]> {
+  private async getUsage(start: Date, end: Date): Promise<EstimationResult[]> {
     const query = `SELECT
-                    DATE_TRUNC(DATE(usage_start_time), ${
-                      GCP_QUERY_GROUP_BY[grouping]
-                    }) as timestamp,
-                    project.id as accountId,
-                    project.name as accountName,
+                    usage_month as timestamp,
+                    pproject.id as accountId,
+                    project.id as accountName,
                     ifnull(location.region, location.location) as region,
                     service.description as serviceName,
-                    sku.description as usageType,
-                    usage.unit as usageUnit,
-                    system_labels.value AS machineType,
-                    SUM(usage.amount) AS usageAmount,
-                    SUM(cost) AS cost
+                    SUM(carbon_footprint_kgCO2e) / 1000 as co2e
                   FROM
-                    \`${this.tableName}\`
-                  LEFT JOIN
-                    UNNEST(system_labels) AS system_labels
-                    ON system_labels.key = "compute.googleapis.com/machine_spec"
-                  WHERE
-                    cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
-                    AND usage_start_time >= TIMESTAMP('${moment
+                    \`${this.tableName}\`  
+                    WHERE usage_month >= TIMESTAMP('${moment
                       .utc(start)
                       .format('YYYY-MM-DD')}')
-                    AND usage_end_time <= TIMESTAMP('${moment
+                    AND usage_month <= TIMESTAMP('${moment
                       .utc(end)
                       .format('YYYY-MM-DD')}')
                   GROUP BY
@@ -609,10 +553,7 @@ export default class BillingExportTable {
                     accountId,
                     accountName,
                     region,
-                    serviceName,
-                    usageType,
-                    usageUnit,
-                    machineType`
+                    serviceName`
 
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)

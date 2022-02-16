@@ -3,10 +3,12 @@
  */
 
 import express from 'express'
+import csv from 'csvtojson'
+
+import { appendOrAccumulateEstimatesByDay } from '@cloud-carbon-footprint/core'
 
 import {
   App,
-  CreateValidFootprintRequest,
   CreateValidRecommendationsRequest,
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
@@ -14,10 +16,14 @@ import {
 
 import {
   EstimationRequestValidationError,
+  GroupBy,
   Logger,
   PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
+import path from 'path'
+import process from 'process'
+import { GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/gcp'
 
 const apiLogger = new Logger('api')
 
@@ -47,13 +53,33 @@ const FootprintApiMiddleware = async function (
     apiLogger.warn(
       'GroupBy parameter not specified. This will be required in the future.',
     )
-  const footprintApp = new App()
   try {
-    const estimationRequest = CreateValidFootprintRequest(rawRequest)
-    const estimationResults = await footprintApp.getCostAndEstimates(
-      estimationRequest,
-    )
-    res.json(estimationResults)
+    const filePath = path.join(process.cwd(), 'google-carbon-data.csv')
+    const parsedCsv = await csv().fromFile(filePath)
+    const csvData = JSON.parse(JSON.stringify(parsedCsv))
+
+    const results: any[] = []
+
+    csvData.map((row: any) => {
+      row['timestamp'] = new Date(row.timestamp)
+      row['cloudProvider'] = 'GCP'
+      row['cost'] = 0
+      const co2e = parseFloat(row.co2e)
+      const footprintEstimate = {
+        timestamp: row.timestamp,
+        kilowattHours:
+          co2e / GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[row.region],
+        co2e: co2e,
+      }
+      appendOrAccumulateEstimatesByDay(
+        results,
+        row,
+        footprintEstimate,
+        GroupBy.month,
+      )
+    })
+
+    res.json(results)
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
     if (

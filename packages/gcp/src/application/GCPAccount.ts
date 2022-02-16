@@ -102,7 +102,7 @@ export default class GCPAccount extends CloudProviderAccount {
       ),
       new BigQuery({ projectId: this.id }),
     )
-    return billingExportTableService.getEstimates(startDate, endDate, grouping)
+    return billingExportTableService.getEstimates(startDate, endDate)
   }
 
   static getBillingExportDataFromInputData(
