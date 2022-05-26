@@ -14,6 +14,7 @@ import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'
 import { EstimationRequest } from './CreateValidRequest'
+import { MongoClient } from 'mongodb'
 
 const cacheManager: EstimatorCache = new CacheManager()
 
@@ -145,6 +146,41 @@ export default function cache(): any {
       const grouping =
         (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
 
+      // Grab the estimates then write them to the database, ignore usual caching method
+
+      // Connect to mongodb client
+      const uri = 'mongodb://localhost:27017'
+      const client = new MongoClient(uri)
+
+      try {
+        await client.connect()
+        const db = client.db('ccf')
+        const storedEstimates = `estimates-by-${grouping}-${request.startDate.getFullYear()}`
+        await db
+          .listCollections({ name: storedEstimates })
+          .next(function (err, collinfo) {
+            if (collinfo) {
+              // The collection exists - This is where you'd do stuff to filter by start/end date and fill in missing dates
+              // For now, we'll just overwrite stored estimates each time for simplicity
+              db.dropCollection(storedEstimates)
+            } else {
+              // The collection does not exist - so we can create it
+              db.createCollection(storedEstimates)
+            }
+          })
+        cacheLogger.info(`Creating new database collection: ${storedEstimates}`)
+        const collection = await db.collection(storedEstimates)
+        const estimates = await decoratedFunction.apply(target, [request])
+        cacheLogger.info('Writing estimates estimates database')
+        await collection.insertMany(estimates)
+        cacheLogger.info('Estimates successfully cached!')
+        return estimates
+      } finally {
+        await client.close()
+      }
+
+      // ******************************************************************************************
+      /*
       if (request.ignoreCache && !process.env.TEST_MODE) {
         cacheLogger.info('Ignoring cache...')
         return decoratedFunction.apply(target, [request])
@@ -181,6 +217,7 @@ export default function cache(): any {
       )
 
       return concat(filteredCachedEstimates, estimates)
+      */
     }
   }
 }

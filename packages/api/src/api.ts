@@ -20,6 +20,7 @@ import {
   PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
+// import { MongoClient } from 'mongodb'
 
 const apiLogger = new Logger('api')
 
@@ -50,11 +51,24 @@ const FootprintApiMiddleware = async function (
       'GroupBy parameter not specified. This will be required in the future.',
     )
   const footprintApp = new App()
+  // const uri = 'mongodb://localhost:27017'
+  // const client = new MongoClient(uri)
   try {
     const estimationRequest = CreateValidFootprintRequest(rawRequest)
     const estimationResults = await footprintApp.getCostAndEstimates(
       estimationRequest,
     )
+    // await client.connect()
+
+    // const db = client.db('ccf')
+    // const storedEstimates = db.collection('estimates-by-day')
+
+    // We can paginate by using .limit() and .skip(), and having the client send multiple requests to loop through the data.
+    // const estimationResults = await storedEstimates
+    //   .find()
+    //   .skip(300)
+    //   .limit(10) // Limit has been acting weird and the client only shows data based on skip, but can be investigated during implementation
+    //   .toArray()
     res.json(estimationResults)
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
@@ -69,6 +83,9 @@ const FootprintApiMiddleware = async function (
       res.status(416).send(e.message)
     } else res.status(500).send('Internal Server Error')
   }
+  // } finally {
+  //   await client.close()
+  // }
 }
 
 const EmissionsApiMiddleware = async function (
